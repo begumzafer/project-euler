@@ -1,11 +1,10 @@
 ﻿using Euler.Console;
-using Euler.Console.Solutions;
 
 int number;
 
 do
 {
-    Console.WriteLine("Hello friend, which solution do you want to see? Enter 6666 for exit :) ");
+    Console.WriteLine("\nHello friend, which solution do you want to see? Enter 6666 for exit :) ");
     number = Convert.ToInt32(Console.ReadLine());
     var answer = GetAnswer(number);
     Console.WriteLine("Problem Defination: " + answer.Defination);
@@ -16,15 +15,15 @@ do
 
 ProblemResponseModel<dynamic> GetAnswer(int problemNo)
 {
-    return problemNo switch
-    {
-        1 => Problem1.GetAnswer(),
-        2 => Problem2.GetAnswer(),
-        3 => Problem3.GetAnswer(),
-        4 => Problem4.GetAnswer(),
-        _ => GetNotInitializedAnswer()
-    };
+    var methodName = "GetAnswer" + problemNo;
+
+    var type = typeof(Solution);
+    var method = type.GetMethod(methodName);
+    if (method == null) return GetNotInitializedAnswer();
+
+    return (ProblemResponseModel<dynamic>) method.Invoke(null, null)!;
 }
+
 
 ProblemResponseModel<dynamic> GetNotInitializedAnswer()
 {
