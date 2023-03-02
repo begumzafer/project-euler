@@ -113,4 +113,47 @@ public class Solution
         var reverted = new string(x.Reverse().ToArray());
         return x.Equals(reverted);
     }
+
+    public static ProblemResponseModel<dynamic> GetAnswer5()
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+
+        int LeastCommonMultiple(int a, int b)
+        {
+            return a * b / GreatestCommonDivisor(a, b);
+        }
+
+        int GreatestCommonDivisor(int a, int b)
+        {
+            while (b != 0)
+            {
+                var temp = b;
+                b = a % b;
+                a = temp;
+            }
+
+            return a;
+        }
+
+        int SmallestMultiple(int maxDivisor)
+        {
+            var lcm = 1;
+
+            for (var i = 2; i <= maxDivisor; i++) lcm = LeastCommonMultiple(lcm, i);
+
+            return lcm;
+        }
+
+        var smallestMultiple = SmallestMultiple(20);
+        sw.Stop();
+
+        return new ProblemResponseModel<dynamic>
+        {
+            Defination =
+                "What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20",
+            MyMessage = "It takes: " + sw.ElapsedMilliseconds,
+            Result = smallestMultiple
+        };
+    }
 }
